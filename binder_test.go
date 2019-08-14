@@ -1,7 +1,8 @@
 package env
 
 import (
-	"log"
+	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
@@ -10,10 +11,15 @@ func TestNewBinderImpl(t *testing.T) {
 		Port int
 		Host string
 	}{}
-	log.Print(env)
 
-	binder := NewBinderImpl()
+	_ = os.Setenv("test.Host", "localhost")
+	_ = os.Setenv("test.Port", "8080")
+
+	binder := NewBinderImpl("test")
 
 	binder.Bind(&env)
+
+	assert.Equal(t, "localhost", env.Host)
+	assert.Equal(t, 8080, env.Port)
 
 }

@@ -6,22 +6,27 @@ import (
 )
 
 type Environment interface {
-	Get() map[string]string
+	GetAll() map[string]string
+	Get(string) string
 }
 
 type EnvironmentImpl struct {
 	envPair map[string]string
 }
 
+func (e *EnvironmentImpl) GetAll() map[string]string {
+	return e.envPair
+}
+
+func (e *EnvironmentImpl) Get(key string) string {
+	return e.envPair[key]
+}
+
 func NewEnvironmentImpl() *EnvironmentImpl {
 	env := &EnvironmentImpl{make(map[string]string)}
 	for _, pair := range os.Environ() {
 		kv := strings.Split(pair, "=")
-		env.envPair[kv[0]] = kv[1]
+		env.envPair[strings.ToLower(kv[0])] = strings.ToLower(kv[1])
 	}
 	return env
-}
-
-func (e *EnvironmentImpl) Get() map[string]string {
-	return e.envPair
 }
