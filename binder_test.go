@@ -14,6 +14,6 @@ func TestNewBinderImpl(t *testing.T) {
 
 	binder := NewBinderImpl()
 
-	binder.Bind(nil)
+	binder.Bind(&env)
 
 }
